@@ -10,13 +10,14 @@ const readline = require('readline').createInterface({ //npm install readline th
   var item = items[Math.floor(Math.random()*items.length)];// system chooses randomly
   readline.question(`type your input:`, input=> { //input from the user
     console.log(`your input ${input}!`);//conditions of win and lose 
-      if(input=='stone' && item=='stone'|| input=='paper' && item=='paper' || input=='scissor' && item=='scissor'){
+    if(input!='stone'||'paper'||'scissor'){console.log('Error Type stone paper or scissor')}
+     else if(input=='stone' && item=='stone'|| input=='paper' && item=='paper' || input=='scissor' && item=='scissor'){
           console.log('system:'+item);
           console.log('YOU DRAW WITH PLAYER');
   
       }else if(input=='stone' && item=='scissor'||input=='paper' && item=='stone'||input=='scissor' && item=='paper'){
           console.log('system:'+item);
-          count=count+1;                  //printing if you win the game
+                           //printing if you win the game
           console.log('You WIN THE GAME');
       }else if(input=='scissor' && item=='stone'||input=='stone' && item=='paper'||input=='paper' && item=='scissor'){
           console.log('system:'+item);
