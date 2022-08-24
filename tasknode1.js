@@ -1,16 +1,16 @@
+let prompt=require('prompt-sync')();
 
-const names=['tharun','purushottam','roshini','rakesh','sushmitha']
+const count=prompt('Enter the no of patients:');
 var i=0;
-var count=0;
-num=names.length;
-for (let i=0;i<num;i++){
+
+
+for (let i=0;i<count;i++){
 let i= new Promise(function(myResolve, myReject) {
-  let rand=(Math.floor(Math.random() * 10) + 1 )*1000
+  var rand=(Math.floor(Math.random() * 10) + 1 )*1000
   setTimeout(function() {
-   name=names[count]
-   count=count+1
+    const name = prompt('Patient  name:');
   
-    console.log('name:'+name+' , Time Taken:'+rand) 
+    console.log('Time taken By the Patient:'+ rand/1000+'s'); 
     myResolve("next patient go inside"); 
   }, rand);
 });
