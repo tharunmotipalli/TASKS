@@ -19,10 +19,13 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+
 Route.group(()=>{
-Route.post('/tab','HomeController.insert')
+Route.post('/insert','HomeController.insert')
 Route.get('/get','HomeController.getter')
 Route.post('/arithmetic','HomeController.arithmetic')}).middleware('Arith')
 Route.post('/read','HomeController.read')
 Route.patch('/update','HomeController.update')
 Route.delete('/delete','HomeController.delete')
+Route.get('/join','HomeController.join')
+Route.post('/userinsert','HomeController.userinsert')
