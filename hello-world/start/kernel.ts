@@ -41,4 +41,5 @@ Server.middleware.register([
 |
 */
 Server.middleware.registerNamed({
+  Arith:()=>import('App/Middleware/Arith')
 })
