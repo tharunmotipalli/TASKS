@@ -10,7 +10,6 @@
 */
 
 import Server from '@ioc:Adonis/Core/Server'
-
 /*
 |--------------------------------------------------------------------------
 | Global middleware
@@ -41,5 +40,5 @@ Server.middleware.register([
 |
 */
 Server.middleware.registerNamed({
-  Arith:()=>import('App/Middleware/Arith')
+  Appkey:()=>import('App/Middleware/Appkey')
 })

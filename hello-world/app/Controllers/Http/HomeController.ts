@@ -1,8 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-
-
 import Tab from '../../Models/Tab';
-import ArithValidator from '../../Validators/ArithValidator';
 import User from 'App/Models/User';
 import Database from '@ioc:Adonis/Lucid/Database';
 
@@ -20,28 +17,7 @@ public async insert({request}:HttpContextContract){
 public async getter(){
   return 'got Succesfully'
 }
-public async arithmetic({request}:HttpContextContract){
-  function multiply(a: number, b: number) {
-    return (a * b);
-  }
-  function add(a: number, b: number) {
-    return (a +b)
-  }
-  function subtract(a: number, b: number) {
-    return (a - b)
-  }
-  function divide(a: number, b: number) {
-    return (a / b);
-  }
-  const checker=await request.validate(ArithValidator)
-  let a:number=checker['a'];
-  let b:number=checker['b'];
-  let c=add(a,b)
-  let d=subtract(a,b)
-  let e=multiply(a,b)
-  let f=divide(a,b)
-  return "sum:" + c +"\nsubtract:" +d+ "\nmultiply:"+ e + "\ndivide:" +f
-}
+
 public async read(){
   return await Tab.all()
 }
@@ -66,6 +42,7 @@ public async userinsert({request}:HttpContextContract){
   users.save()
   return "successfully inserted"
 }
+
 
 
 public async join(){

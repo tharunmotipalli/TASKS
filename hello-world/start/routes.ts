@@ -1,31 +1,26 @@
-/*
-|--------------------------------------------------------------------------
-| Routes
-|--------------------------------------------------------------------------
-|
-| This file is dedicated for defining HTTP routes. A single file is enough
-| for majority of projects, however you can define routes in different
-| files and just make sure to import them inside this file. For example
-|
-| Define routes in following two files
-| ├── start/routes/cart.ts
-| ├── start/routes/customer.ts
-|
-| and then import them inside `start/routes.ts` as follows
-|
-| import './routes/cart'
-| import './routes/customer'
-|
-*/
-
 import Route from '@ioc:Adonis/Core/Route'
 
+//Employee group 5 end points
 Route.group(()=>{
-Route.post('/insert','HomeController.insert')
-Route.get('/get','HomeController.getter')
-Route.post('/arithmetic','HomeController.arithmetic')}).middleware('Arith')
-Route.post('/read','HomeController.read')
-Route.patch('/update','HomeController.update')
-Route.delete('/delete','HomeController.delete')
-Route.get('/join','HomeController.join')
-Route.post('/userinsert','HomeController.userinsert')
+Route.get('/read','EmployeesController.read_employee')
+Route.get('/readbyid/:id','EmployeesController.read_employee_by_id')
+Route.post('/insert','EmployeesController.insert_employee')
+Route.patch('/update','EmployeesController.update_employee')
+Route.delete('/delete','EmployeesController.delete_employee')
+}).middleware('Appkey').prefix('/employee') //middleware Appkey
+
+//Department group 5 endpoints
+Route.group(()=>{
+    Route.get('/read','DepartmentsController.read_department')
+    Route.get('/readbyid/:id','DepartmentsController.read_department_by_id')
+    Route.post('/insert','DepartmentsController.insert_department')
+    Route.patch('/update','DepartmentsController.update_department')
+    Route.delete('/delete','DepartmentsController.delete_department')
+}).middleware('Appkey').prefix('/department')//middleware Appkey
+//remaining two end points
+Route.group(()=>{
+    Route.get('/jointable','DepartmentsController.jointable')//innerjoin of employees and departments table
+    Route.get('/order_salary','EmployeesController.order_salary')// order employees by salary
+    Route.get('/sum_salary','EmployeesController.sum_salary')//sum of salary of employee
+
+}).middleware('Appkey')
