@@ -22,5 +22,6 @@ Route.group(()=>{
     Route.get('/jointable','DepartmentsController.jointable')//innerjoin of employees and departments table
     Route.get('/order_salary','EmployeesController.order_salary')// order employees by salary
     Route.get('/sum_salary','EmployeesController.sum_salary')//sum of salary of employee
-
+   
 }).middleware('Appkey')
+Route.get('/search/:id','DepartmentsController.search')

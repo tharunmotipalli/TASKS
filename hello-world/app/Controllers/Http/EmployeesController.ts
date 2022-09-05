@@ -40,6 +40,7 @@ public async delete_employee({request}:HttpContextContract){
     await emp1.save()
     return Employee.all()
 }
+//order salary for employees
 public async order_salary(){
   const ordertable=await Database.from('employees')
   .select('empname')
@@ -47,6 +48,7 @@ public async order_salary(){
   .orderBy('salary','asc')
   return ordertable
 }
+//raw query example
 public async sum_salary(){
   const searchitem=await Database.rawQuery('select sum(salary) as sum from employees')
   return searchitem

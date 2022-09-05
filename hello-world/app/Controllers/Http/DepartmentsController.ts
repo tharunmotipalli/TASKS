@@ -41,6 +41,7 @@ public async delete_department(){
     await dep1.save()
     return Department.all()
 }
+//join table employees and departments
 public async jointable(){
   const tablejoin=await Database.from('employees')
   .join('departments','employees.empname','=','departments.empname')
@@ -51,4 +52,19 @@ public async jointable(){
   .where('id',1)
   return tablejoin
 }
+//search in Department table
+public async search({request}:HttpContextContract){
+const searchitem=request.params().id
+const searchs=await Database.from('departments').select('*')
+.where("depname","ilike",`%${searchitem}%`)
+.orWhere("empname","ilike",`%${searchitem}%`)
+.orWhere('depid',request.params().id)
+console.log(searchs)
+if(searchs.length!=0){
+  return searchs
+}else{
+  return "search Not Found"
 }
+}
+}
+
