@@ -68,6 +68,16 @@
           hint="Pick your favorite hobby"
           persistent-hint
         ></v-select>
+        
+        <v-checkbox
+        v-model="form.languages"
+          v-for="(cho) in form.choice"
+          :key="cho.id"
+          :label="cho.name"
+          :value="cho.name"
+          hint="Select the languages you know"
+          required
+        ></v-checkbox>
     <v-btn
     :disabled="!valid"
     color="success"
@@ -108,9 +118,12 @@
       ],
       city:'',
       select: null,
-      items1: ['city 1','city 2','city 3','city 4'
+      items1: ['city1','city2','city3','city4'
       
       ],
+      choice: [
+       {id :1,name:'English'},{id:2,name:'Telugu'},{id:3,name:'Tamil'},{id:4,name:'Hindi'}],
+       languages:[],
       gender:'',
       checkbox: false,
     
@@ -130,7 +143,8 @@
               email : this.form.email,
               gender :this.form.gender,
               mobile: this.form.mobile,
-              value:this.form.value
+              value:this.form.value,
+              languages:this.form.languages
             }
             console.log(JSON.stringify(arr))
     },
