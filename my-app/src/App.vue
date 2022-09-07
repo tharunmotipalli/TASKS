@@ -1,24 +1,28 @@
 <template>
   <v-app>
-   
     <v-main>
-      <HelloWorld/>
+     
+      <FormTable/>
+   
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+//import SubmitForm from './components/SubmitForm.vue';
+import FormTable from './components/FormTable.vue'
+
+
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
+   // SubmitForm,
+    FormTable,
   },
 
   data: () => ({
-    //
   }),
 };
 </script>
