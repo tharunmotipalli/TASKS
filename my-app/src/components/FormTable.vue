@@ -71,7 +71,9 @@
                     v =>!!v || 'Age is Required',
                     v =>(v>0 && v<=100) || 'Age  must be between 0 and 100'
                   ]"></v-text-field>
-                  <v-radio-group column v-model="editedItem.gender" label="Gender">
+                  <v-radio-group column v-model="editedItem.gender" :rules="[ 
+                    v => !!v || 'Gender is required']" label="Gender"
+                  >
                     <v-radio label="Male" value="male"></v-radio>
                     <v-radio label="Female" value="female"></v-radio>
                   </v-radio-group>
@@ -83,7 +85,8 @@
                   <v-text-field v-model="editedItem.email" :rules="[ 
                   v => !!v || 'E-mail is required',
                   v => /.+@.+\..+/.test(v)  || 'E-mail must be valid']" label="email"></v-text-field>
-                  <v-select v-model="editedItem.Hobbies" :items="editedItem.list" label="Select" multiple
+                  <v-select v-model="editedItem.Hobbies" :items="editedItem.list" :rules="[ 
+                    v => !!v || 'Hobbies is required']" label="Select" multiple
                     hint="Pick your favorite hobby" persistent-hint></v-select>
                   <v-text-field v-model="editedItem.mobile" :rules="[ 
                   v => !!v || 'mobile no  is required',
@@ -92,7 +95,8 @@
                   </v-text-field>
                   <p>Select Languages</p>
                   <v-checkbox v-model="editedItem.languages" v-for="(option) in editedItem.choice" :key="option.id"
-                    :label="option.name" :value="option.name" hint="Select the languages you know" required>
+                    :label="option.name" :rules="[ 
+                      v => !!v || 'Languages is required']" :value="option.name" hint="Select the languages you know" required>
                   </v-checkbox>
                 </v-form>
               </v-container>
