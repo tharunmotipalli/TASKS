@@ -2,8 +2,8 @@
   <v-simple-table fixed-header>
     <thead>
       <tr>
-        <th class="txtt-left">Name</th>
-        <th class="txtt-left">Age</th>
+        <th class="text-left">Name</th>
+        <th class="text-left">Age</th>
 
         <th class="text-left">Gender</th>
         <th class="text-left">Mobile</th>
@@ -192,15 +192,6 @@ export default {
   },
 
   methods: {
-    clearForm() {
-      this.name = '',
-        this.age = '',
-        this.gender = '',
-        this.city = '',
-        this.email = '',
-        this.Hobbies = [],
-        this.mobile = ''
-    },
 
     editItem(item) {
       this.editedIndex = this.details.indexOf(item)
