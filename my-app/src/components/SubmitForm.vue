@@ -69,15 +69,7 @@
             persistent-hint
           ></v-select>
           
-          <v-checkbox
-          v-model="form.languages"
-            v-for="(option) in form.choice"
-            :key="option.id"
-            :label="option.name"
-            :value="option.name"
-            hint="Select the languages you know"
-            required
-          ></v-checkbox>
+          
       <v-btn
       :disabled="!valid"
       color="success"
@@ -87,44 +79,7 @@
       Validate
       </v-btn>
     </v-form>
-    <v-dialog v-model="dialog" width="1000px">
-        <template v-slot:activator="{ on, attrs }">
-            <v-btn color="red " dark v-bind="attrs" v-on="on">
-                Pop UP
-            </v-btn>
-        </template>
-
-        <v-card>
-            <v-card-title class="text-h5 grey lighten-2">
-                Form Data
-            </v-card-title>
-
-            <v-card-text>
-                <v-data-table :headers="form.headers" :items="form.desserts" sort-by="name">
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-btn color="primary" dark v-bind="attrs" v-on="on">
-                            New Item
-                        </v-btn>
-                    </template>
-                    <template v-slot:no-data>
-                        <v-btn color="primary" @click="validate">
-                            Reset
-                        </v-btn>
-                    </template>
-
-                </v-data-table>
-            </v-card-text>
-
-            <v-divider></v-divider>
-
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" text @click="dialog = false">
-                    I accept
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+    
   </v-main>
   </v-app>
   </template>
