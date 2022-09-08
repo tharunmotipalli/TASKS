@@ -11,7 +11,8 @@
         <th class="text-left">City</th>
         <th class="text-left">Interests</th>
         <th class="txtt-left">Languages</th>
-        <th class="text-left" value="actions">Actions</th>
+        <th class="text-left">Edit</th>
+        <th class="text-left">Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -22,7 +23,7 @@
         <td>{{ item.city }}</td>
         <td>{{ item.mobile }}</td>
         <td>{{ item.email }}</td>
-        <td>{{ item.Hobbies }}</td>
+        <td >{{ item.Hobbies }}</td>
         <td>{{ item.languages }}</td>
         <td>
           <v-btn color="red" class="mr-2" @click="editItem(item)">edit
@@ -119,6 +120,16 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <v-dialog v-model="Dialogfill" max-width="500px">
+          <v-card>
+            <v-card-title>please fill all the fields correctly</v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" @click="fillclose">OK</v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-toolbar>
     </template>
   </v-simple-table>
@@ -128,6 +139,7 @@ export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
+    Dialogfill:false,
     headers: [
       {
         text: 'Name',
@@ -154,7 +166,7 @@ export default {
       email: '',
       items: ['city1', 'city2', 'city3', 'city4'],
       list: ['fishing', 'cooking', 'reading', 'jogging'],
-      Hobbies: [],
+      Hobbies:[],
       mobile: '',
       choice: [
         { id: 1, name: 'English' }, { id: 2, name: 'Telugu' }, { id: 3, name: 'Tamil' }, { id: 4, name: 'Hindi' }],
@@ -234,11 +246,17 @@ export default {
       } else if (this.$refs.form.validate()) {
 
         this.details.push(this.editedItem)
+      }else{
+        this.Dialogfill=true
       }
       this.$refs.form.resetValidation()
       this.close()
 
     },
+    fillclose(){
+      this.Dialogfill=false
+      this.dialog=true
+    }
   },
 }
 </script>
