@@ -4,6 +4,11 @@
 <v-simple-table fixed-header>
     <thead>
       <tr>
+        <th class="text-left">S/no
+          <v-icon small class="mr-2">
+            mdi-pencil
+          </v-icon>
+        </th>
         <th class="text-left">Name</th>
         <th class="text-left">Age</th>
         <th class="text-left">Gender</th>
@@ -14,12 +19,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="item in list" v-bind:key="item.id">
-        <td>{{ item.name }}</td>
-        <td>{{ item.age }}</td>
+      <tr v-for="item in list" v-bind:key="item.id" >
+        <td>{{ item.name | trim-text}}
+        </td>
+        <td>{{ item.age | trim-text}}</td>
         <td>{{ item.gender}}</td>
-        <td>{{ item.mobile }}</td>
-        <td>{{ item.email }}</td>
+        <td>{{ item.mobile | trim-text}}</td>
+        <td>{{ item.email | trim-text}}</td>
         <td>
             <v-btn color="red" class="mr-2" @click="editItem(item)">edit
               <v-icon small class="mr-2">
@@ -43,17 +49,18 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="1000px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="red" dark v-bind="attrs" v-on="on">
+              <v-btn color="red" dark v-bind="attrs"  @click="popup" v-on="on">
                 POPUP
               </v-btn>
             </template>
             <v-card>
                 <v-card-text>
                    <v-container>
-                    <v-form>
+                    <v-form
+                    ref="form">
                         <v-text-field  label="name" v-model='name' placeholder="enter name" :rules="[
                             v => !!v || 'Name is required',
-                            v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+                        
                           ]"></v-text-field>
                           <v-text-field  label="age"  v-model="age" type="number" :rules="[
                             v =>!!v || 'Age is Required',
@@ -70,7 +77,7 @@
                           v => /.+@.+\..+/.test(v)  || 'E-mail must be valid']" label="email"></v-text-field>
                           <v-text-field v-model='mobile' :rules="[ 
                           v => !!v || 'mobile no  is required',
-                          v => (/[0-9]/.test(v)) || 'mobile number must be valid',
+                        
                           ]" :counter="10" label="mobile no">
                           </v-text-field>
                     </v-form>
@@ -81,10 +88,10 @@
                     <v-btn color="red" @click="cancel" text>
                       Cancel
                     </v-btn>
-                    <v-btn color="red" v-model="saveb" @click='insert' text>
+                    <v-btn color="red" v-model="saveb" @click='insert' v-if="rand" >
                       Save
                     </v-btn>
-                    <v-btn color="red" v-model="editb" @click='edit(list.id)' text>
+                    <v-btn color="red" v-model="editb" @click='edit(list.id)' v-if="!rand">
                         edit
                       </v-btn>
                   </v-card-actions>
@@ -121,6 +128,8 @@ return{
    mobile:'',
    saveb:true,
    editb:false,
+   key:0,
+   rand:true,
    
 }
 },
@@ -143,6 +152,8 @@ methods:
     })
 },
 async insert(){
+  
+  this.$refs.form.validate()
   await  Vue.axios.post(`http://127.0.0.1:3333/`,{
    name:this.name, 
    age:this.age,
@@ -157,12 +168,16 @@ async insert(){
   .catch(function (error) {
     console.log(error);
  });
+ this.$refs.form.reset()
  this.getdata()
  this.dialog=false
 
 },
 cancel(){
     this.dialog=false
+},
+popup(){
+  this.rand=true
 },
 async deleteItem(id) {
        await axios.delete(`http://127.0.0.1:3333/${id}`)
@@ -172,6 +187,7 @@ async deleteItem(id) {
             this.getdata()
     },
   editItem(item){
+    this.rand=false
      test=item
         this.name = item.name
         this.age=item.age
@@ -201,7 +217,10 @@ async edit(){
                  console.log(response);
              });
              console.log(test.name)
+             this.$refs.form.reset()
              this.getdata()
+             this.dialog=false
+             
     },
 }
 }
