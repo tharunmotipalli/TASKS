@@ -1,16 +1,18 @@
 <template>
   <v-app>
     <v-main>
-     
-      <FormTable/>
+    
+      <TableData/>
    
     </v-main>
   </v-app>
 </template>
 
 <script>
-//import SubmitForm from './components/SubmitForm.vue';
-import FormTable from './components/FormTable.vue'
+//import FormTable from './components/FormTable.vue';
+import TableData from './components/TableData.vue';
+
+//import TableData from './components/TableData.vue';
 
 
 
@@ -18,9 +20,9 @@ export default {
   name: 'App',
 
   components: {
-   // SubmitForm,
-    FormTable,
-  },
+  //  FormTable,
+    TableData
+},
 
   data: () => ({
   }),

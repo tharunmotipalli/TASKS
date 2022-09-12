@@ -4,27 +4,20 @@
       <tr>
         <th class="text-left">Name</th>
         <th class="text-left">Age</th>
-
         <th class="text-left">Gender</th>
         <th class="text-left">Mobile</th>
         <th class="text-left">E-mail</th>
-        <th class="text-left">City</th>
-        <th class="text-left">Interests</th>
-        <th class="txtt-left">Languages</th>
         <th class="text-left">Edit</th>
         <th class="text-left">Delete</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="item in details" :key="item.name">
+      <tr v-for="item in details" v-bind:key="item.id">
         <td>{{ item.name }}</td>
         <td>{{ item.age }}</td>
         <td>{{ item.gender}}</td>
-        <td>{{ item.city }}</td>
         <td>{{ item.mobile }}</td>
         <td>{{ item.email }}</td>
-        <td >{{ item.Hobbies }}</td>
-        <td>{{ item.languages }}</td>
         <td>
           <v-btn color="red" class="mr-2" @click="editItem(item)">edit
             <v-icon small class="mr-2">
@@ -60,7 +53,7 @@
 
             <v-card-text>
               <v-container>
-                <v-form ref="form" v-model="valid" lazy-validation>
+                <v-form ref="form"  lazy-validation>
 
                   <v-text-field v-model="editedItem.name" label="name" placeholder="enter name" :rules="[
                     v => !!v || 'Name is required',
@@ -77,27 +70,14 @@
                     <v-radio label="Male" value="male"></v-radio>
                     <v-radio label="Female" value="female"></v-radio>
                   </v-radio-group>
-
-                  <v-autocomplete v-model="editedItem.city" :items="editedItem.items" dense
-                    :rules="[v => !!v || 'Item is required']" label="City" placeholder="select city" required>
-                  </v-autocomplete>
-
                   <v-text-field v-model="editedItem.email" :rules="[ 
                   v => !!v || 'E-mail is required',
                   v => /.+@.+\..+/.test(v)  || 'E-mail must be valid']" label="email"></v-text-field>
-                  <v-select v-model="editedItem.Hobbies" :items="editedItem.list" :rules="[ 
-                    v => !!v || 'Hobbies is required']" label="Select" multiple
-                    hint="Pick your favorite hobby" persistent-hint></v-select>
                   <v-text-field v-model="editedItem.mobile" :rules="[ 
                   v => !!v || 'mobile no  is required',
                   v => (/[0-9]/.test(v)) || 'mobile number must be valid',
                   v =>v && v.length==10|| 'mobile no must be of size 10']" :counter="10" label="mobile no">
                   </v-text-field>
-                  <p>Select Languages</p>
-                  <v-checkbox v-model="editedItem.languages" v-for="(option) in editedItem.choice" :key="option.id"
-                    :label="option.name" :rules="[ 
-                      v => !!v || 'Languages is required']" :value="option.name" hint="Select the languages you know" required>
-                  </v-checkbox>
                 </v-form>
               </v-container>
             </v-card-text>
@@ -129,52 +109,41 @@
             <v-card-title>please fill all the fields correctly</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" @click="fillclose">OK</v-btn>
+              <v-btn color="red" @click="fillclose">OK</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-toolbar>
     </template>
+      <v-btn
+        color="primary"
+        @click="initialize"
+      >
+        Reset
+      </v-btn>
+    
   </v-simple-table>
 </template>
 <script>
+import axios from 'axios';
+import Vue from 'vue';
+import VueAxios from 'vue-axios';
+Vue.use(VueAxios, axios)
 export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
     Dialogfill:false,
-    headers: [
-      {
-        text: 'Name',
-        align: 'start',
-        sortable: false,
-        value: 'name',
-      },
-      { text: 'Age', value: 'age' },
-      { text: 'Gender', value: 'gender' },
-      { text: 'City', value: 'city' },
-      { text: 'Email', value: 'email' },
-      { text: 'Hobbies', value: 'Hobbies' },
-      { text: 'Mobile', value: 'mobile' },
-      { text: 'Languages', value: 'languages' },
-      { text: 'Actions', value: 'actions', sortable: false },
-    ],
-    details: [],
+    posts:[],
+    details:[],
     editedIndex: -1,
     editedItem: {
       name: '',
       age: '',
       gender: '',
-      city: 0,
       email: '',
-      items: ['city1', 'city2', 'city3', 'city4'],
-      list: ['fishing', 'cooking', 'reading', 'jogging'],
-      Hobbies:[],
       mobile: '',
-      choice: [
-        { id: 1, name: 'English' }, { id: 2, name: 'Telugu' }, { id: 3, name: 'Tamil' }, { id: 4, name: 'Hindi' }],
-      languages: [],
     },
     defaultItem: {
       name: '',
@@ -182,12 +151,7 @@ export default {
       gender: '',
       city: '',
       email: '',
-      items: ['city1', 'city2', 'city3', 'city4'],
-      list: ['fishing', 'cooking', 'reading', 'jogging'],
       mobile: '',
-      choice: [
-        { id: 1, name: 'English' }, { id: 2, name: 'Telugu' }, { id: 3, name: 'Tamil' }, { id: 4, name: 'Hindi' }],
-      languages: [],
 
     },
   }),
@@ -198,14 +162,7 @@ export default {
     },
   },
 
-  watch: {
-    dialog(val) {
-      val || this.close()
-    },
-    dialogDelete(val) {
-      val || this.closeDelete()
-    },
-  },
+ 
 
   methods: {
 
@@ -241,7 +198,6 @@ export default {
         this.editedIndex = -1
       })
     },
-
     save() {
 
       if (this.editedIndex > -1) {
@@ -260,7 +216,15 @@ export default {
     fillclose(){
       this.Dialogfill=false
       this.dialog=true
-    }
+    },
+    mounted(){
+    Vue.axios.get(`http://127.0.0.1:3333/`)
+    .then((response)=>{
+        console.log(response)
+        this.details=(response.data)
+        console.warn(response.data.data)
+    })
+},
   },
 }
 </script>
