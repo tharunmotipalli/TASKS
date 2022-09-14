@@ -32,7 +32,7 @@ export default {
         },
     search(value){
       if(this.searchInput.length!=0){
-      Vue.axios.post('http://127.0.0.1:3333/search',{value:value})
+      Vue.axios.post(this.searchLink,{value:value})
      .then((res)=>{
       this.$emit('searchdata',res)
      })
