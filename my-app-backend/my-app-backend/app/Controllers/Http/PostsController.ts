@@ -4,6 +4,7 @@ import PostValidator from 'App/Validators/PostValidator';
 import Database from '@ioc:Adonis/Lucid/Database';
 
 
+
 export default class PostsController {
 
 public async insert({ request }: HttpContextContract) {
@@ -39,4 +40,18 @@ await edititem.save()
 return edititem
 
 }
+public async search({request}:HttpContextContract){
+    var searchitem=request.input('value')
+    const searchs=await Database.from('posts').select('*')
+    .where("name","ilike",`%${searchitem}%`)
+    .orWhere("gender","ilike",`%${searchitem}%`)
+    .orWhere("email","ilike",`%${searchitem}%`)
+    .orWhere("mobile","ilike",`%${searchitem}%`)
+    console.log(searchs)
+    if(searchs.length!=0){
+      return searchs
+    }else{
+      return "not found"
+    }
+    }
 }

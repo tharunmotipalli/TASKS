@@ -1,14 +1,12 @@
 <template>
     <div>
-<h1>Table</h1>
+<h1>parent</h1>
+<searchBar :searchLink="'http://127.0.0.1:3333/search'" @searchdata="inputChanged($event)"></searchBar>
+<input type="search"  placeholder="search" v-model="searchInput" v-on:keydown="search(searchInput)">
 <v-simple-table fixed-header>
+
     <thead>
       <tr>
-        <th class="text-left">S/no
-          <v-icon small class="mr-2">
-            mdi-pencil
-          </v-icon>
-        </th>
         <th class="text-left">Name</th>
         <th class="text-left">Age</th>
         <th class="text-left">Gender</th>
@@ -130,6 +128,9 @@ return{
    editb:false,
    key:0,
    rand:true,
+   searchitem:undefined,
+   input:'',
+   searchInput:'',
    
 }
 },
@@ -222,6 +223,22 @@ async edit(){
              this.dialog=false
              
     },
-}
+    inputChanged(value){
+      console.log(value)
+      this.list=value.data
+    },
+    search(){
+      if(this.searchInput.length!=0){
+      Vue.axios.post('http://127.0.0.1:3333/search',{value:this.searchInput})
+     .then((res)=>{
+      this.list=res.data
+     })
+    }
+  }
+  
+   
+  }
+
+
 }
 </script>

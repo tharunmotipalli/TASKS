@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
+import searchBar from './components/searchBar.vue'
+
+Vue.component('searchBar',searchBar)
 
 Vue.config.productionTip = false
 Vue.filter('trim-text', function(value){
@@ -14,6 +17,7 @@ Vue.filter('trim-text', function(value){
   }
   else return value
 })
+
 new Vue({
   vuetify,
   render: h => h(App)

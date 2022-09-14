@@ -1,7 +1,6 @@
 <template>
   <v-app>
     <v-main>
-    
       <TableData/>
    
     </v-main>
@@ -12,7 +11,8 @@
 //import FormTable from './components/FormTable.vue';
 import TableData from './components/TableData.vue';
 
-//import TableData from './components/TableData.vue';
+
+
 
 
 
@@ -20,8 +20,9 @@ export default {
   name: 'App',
 
   components: {
-  //  FormTable,
-    TableData
+    // FormTable,
+    TableData,
+   
 },
 
   data: () => ({
