@@ -54,4 +54,9 @@ public async search({request}:HttpContextContract){
       return "not found"
     }
     }
+    public async sort({request}:HttpContextContract){
+      const sortItem=request.input('sortItem')
+      const sort=await Database.from('posts').select('*').orderBy(`${sortItem}`,'asc')
+      return sort
+    }
 }

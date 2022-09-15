@@ -1,8 +1,8 @@
 <template>
 <div>
-<h1>searchbar </h1>
-<input type="text" v-model="searchInput" placeholder="searchbar">
-<button @click="search(searchInput)">search</button>
+<h4>Search </h4>
+<v-text-field type="text" v-thousand v-model="searchInput" placeholder="searchbar" v-on:keydown="search(searchInput)" bold></v-text-field> 
+
 </div>
 </template>
 

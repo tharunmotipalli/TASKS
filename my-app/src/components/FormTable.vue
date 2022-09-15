@@ -218,7 +218,7 @@ export default {
       this.dialog=true
     },
     mounted(){
-    Vue.axios.get(`http://127.0.0.1:3333/`)
+    Vue.axios.get(readData)
     .then((response)=>{
         console.log(response)
         this.details=(response.data)
