@@ -42,21 +42,30 @@ return edititem
 }
 public async search({request}:HttpContextContract){
     var searchitem=request.input('value')
-    const searchs=await Database.from('posts').select('*')
+    const searchs=await Database.from('posts').select('*').where((query) => {
+      if (/^[0-9]/.test(searchitem)) {
+        query.where('age', searchitem)
+      }
+    })
+    .orWhere((query: any) => {
+      query
     .where("name","ilike",`%${searchitem}%`)
     .orWhere("gender","ilike",`%${searchitem}%`)
     .orWhere("email","ilike",`%${searchitem}%`)
     .orWhere("mobile","ilike",`%${searchitem}%`)
-    console.log(searchs)
-    if(searchs.length!=0){
-      return searchs
-    }else{
-      return "not found"
-    }
-    }
-    public async sort({request}:HttpContextContract){
+  })
+  return searchs
+}
+    public async sortasc({request}:HttpContextContract){
       const sortItem=request.input('sortItem')
-      const sort=await Database.from('posts').select('*').orderBy(`${sortItem}`,'asc')
+      
+      const sort=await Database.from('posts').select('*').orderBy(`${sortItem}`,`asc`)
+      return sort
+    }public async sortdesc({request}:HttpContextContract){
+      const sortItem=request.input('sortItem')
+      
+      const sort=await Database.from('posts').select('*').orderBy(`${sortItem}`,`desc`)
       return sort
     }
+    
 }

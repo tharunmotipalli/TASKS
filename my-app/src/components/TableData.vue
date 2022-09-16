@@ -1,29 +1,29 @@
 <template>
   <div>
     <searchBar :searchLink="'http://127.0.0.1:3333/search'" @searchdata="inputChanged($event)"></searchBar>
-    <input type="search" placeholder="search" v-model="searchInput" v-on:keydown="search(searchInput)">
+    <input type="search" placeholder="search" v-model="searchInput"  :keydown="search(searchInput)">
     <v-simple-table fixed-header>
 
       <thead>
         <tr>
-          <th class="text-left">Name <v-icon small class="mr-2">
-              mdi-pencil
+          <th class="text-left">Name <v-icon @click="iconchange('name')" small class="mr-2">
+               {{icon}}
             </v-icon>
           </th>
-          <th class="text-left">Age <v-icon small class="mr-2">
-              mdi-pencil
+          <th class="text-left">Age <v-icon  @click="iconchange('age')" small class="mr-2">
+             {{icon}}
             </v-icon>
           </th>
-          <th class="text-left">Gender <v-icon small class="mr-2">
-              mdi-pencil
+          <th class="text-left">Gender <v-icon  @click="iconchange('gender')" small class="mr-2">
+              {{icon}}
             </v-icon>
           </th>
-          <th class="text-left">Mobile <v-icon small class="mr-2">
-              mdi-pencil
+          <th class="text-left">Mobile <v-icon  @click="iconchange('mobile')" small class="mr-2">
+           {{icon}}
             </v-icon>
           </th>
-          <th class="text-left">E-mail <v-icon small class="mr-2">
-              mdi-pencil
+          <th class="text-left">E-mail <v-icon @click="iconchange('email')" small class="mr-2">
+               {{icon}}
             </v-icon>
           </th>
           <th class="text-left">Edit</th>
@@ -41,7 +41,7 @@
           <td>{{ item.email | trim-text}}</td>
           <td>
             <v-btn color="red" class="mr-2" @click="editItem(item)">edit
-              <v-icon small class="mr-2">
+              <v-icon  small class="mr-2">
                 mdi-pencil
               </v-icon>
             </v-btn>
@@ -119,12 +119,8 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
-import Vue from 'vue';
-import VueAxios from 'vue-axios';
-import api from '../services/api'
+import API from '../services/api'
 var test;
-Vue.use(VueAxios, axios)
 export default {
   name: 'TableData',
 
@@ -149,6 +145,8 @@ export default {
       searchitem: undefined,
       input: '',
       searchInput: '',
+      option:'',
+      icon:'mdi-arrow-up',
       VUE_APP_READ_DATA: process.env.VUE_APP_READ_DATA,
 
     }
@@ -160,7 +158,7 @@ export default {
   methods:
   {
     async getdata() {
-      await api.get(`${this.VUE_APP_READ_DATA}/read`)
+      await API.get(`${this.VUE_APP_READ_DATA}/read`)
         .then((response) => {
           console.warn(response)
           this.list = (response.data)
@@ -170,10 +168,10 @@ export default {
     async insert() {
 
       this.$refs.form.validate()
-      await Vue.axios.post(`${this.VUE_APP_READ_DATA}/insert`, this.formData
+      await API.post(`${this.VUE_APP_READ_DATA}/insert`, this.formData
 
       )
-        .then(function (response) {
+        .then((response)=> {
           console.log(response);
 
         })
@@ -193,7 +191,7 @@ export default {
     },
     async deleteItem(item) {
       this.formData = Object.assign({}, item)
-      await axios.delete(`${this.VUE_APP_READ_DATA}/delete/${this.formData.id}`)
+      await API.delete(`${this.VUE_APP_READ_DATA}/delete/${this.formData.id}`)
         .then(response => {
           console.log(response);
         });
@@ -211,7 +209,7 @@ export default {
 
 
     async edit() {
-      await axios.put(`${this.VUE_APP_READ_DATA}/update/${this.formData.id}`,
+      await API.put(`${this.VUE_APP_READ_DATA}/update/${this.formData.id}`,
         this.formData
       )
         .then(response => {
@@ -229,16 +227,38 @@ export default {
     },
     search() {
       if (this.searchInput.length != 0) {
-        Vue.axios.post(`${this.VUE_APP_READ_DATA}/search`, { value: this.searchInput })
+        API.post(`${this.VUE_APP_READ_DATA}/search`, { value: this.searchInput })
           .then((res) => {
             this.list = res.data
           })
       }
-    }
-
-
+    },
+    
+    sortasc(value){
+      API.post(`${this.VUE_APP_READ_DATA}/sortasc`,{sortItem:value})
+      .then((res) => {
+            this.list = res.data
+      })
+      
+    },
+    sortdesc(value){
+      API.post(`${this.VUE_APP_READ_DATA}/sortdesc`,{sortItem:value})
+      .then((res) => {
+            this.list = res.data
+      })
+},
+iconchange(value)
+{
+  if(this.icon=='mdi-arrow-down'){
+    this.icon='mdi-arrow-up'
+    this.sortasc(value)
+    
+  }else if(this.icon=='mdi-arrow-up'){
+    this.sortdesc(value)
+    this.icon='mdi-arrow-down'
   }
-
-
 }
+}
+}
+
 </script>
