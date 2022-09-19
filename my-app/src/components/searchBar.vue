@@ -1,7 +1,7 @@
 <template>
 <div>
 <h4>Search </h4>
-<v-text-field type="text" v-model="searchInput" v-thousand="searchInput" @receive="directiveData($event)" placeholder="searchbar" v-on:keydown="search(searchInput)" bold></v-text-field> 
+<v-text-field type="text" v-model="searchItem" v-thousand="searchItem"  placeholder="searchbar" @keydown="inputChanged" bold></v-text-field> 
 
 </div>
 </template>
@@ -20,18 +20,19 @@ export default {
     
     data:function(){
         return {
-            searchInput:'',
+            searchItem:'',
             list:undefined,
 
         }
     },
     methods:{
-        inputChanged:function(value){
-            value=this.searchInput
-            this.$emit('search:input',value)
+        inputChanged:function(){
+            if( this.searchItem.length!=0){
+            this.$emit('searchItem', this.searchItem)
+            }
         },
   async search(value){
-    if(this.searchInput.length!=0){
+    if(this.searchItem.length!=0){
   await setTimeout(() => {
     Vue.axios.post(this.searchLink,{value:value})
      .then((res)=>{
@@ -42,10 +43,7 @@ export default {
      
     }
     },
-    directiveData(value){
-      console.log(value)
-    this.searchInput=value
-    },
+   
     }
 }//child
 </script>

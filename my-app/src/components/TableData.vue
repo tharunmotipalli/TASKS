@@ -1,7 +1,7 @@
 <template>
   <div>
-    <searchBar :searchLink="'http://127.0.0.1:3333/search'" @searchdata="inputChanged($event)"></searchBar>
-    <input type="search" placeholder="search" v-model="searchInput"  :keydown="search(searchInput)">
+    <searchBar @searchItem="inputValue($event)" ></searchBar>
+  
     <v-simple-table fixed-header>
 
       <thead>
@@ -221,17 +221,12 @@ export default {
       this.dialog = false
 
     },
-    inputChanged(value) {
-      console.log(value)
-      this.list = value.data
-    },
-    search() {
-      if (this.searchInput.length != 0) {
-        API.post(`${this.VUE_APP_READ_DATA}/search`, { value: this.searchInput })
-          .then((res) => {
-            this.list = res.data
-          })
-      }
+   
+  async inputValue(input){
+    this.searchInput=input
+       let searchpromise=await API.post(`${this.VUE_APP_READ_DATA}/search`,{value:this.searchInput})
+      this.list=searchpromise.data
+
     },
     
     sortasc(value){
